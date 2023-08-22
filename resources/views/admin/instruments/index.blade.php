@@ -5,7 +5,9 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('Lista strumenti') }}</div>
+                    <div class="card-header">
+                        <h2>{{ __('Lista strumenti') }}</h2>    
+                    </div>
 
                     <div class="card-body">
                         <table class="table">
@@ -26,6 +28,11 @@
                                         <td>{{$instrument->code}}</td>
                                         <td>{{$instrument->slug}}</td>
                                         <td>{{$instrument->price}} €</td>
+                                        <td>
+                                            <a href="{{route("instruments.show", $instrument->id)}}">
+                                                <button type="button" class="btn btn-primary">Visualizza</button>
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
