@@ -10,9 +10,15 @@
                     </div>
 
                     <div class="card-body">
+                        <p class="mb-4">
+                            {{$instrument->description}}
+                        </p>
                         <div class="mb-4">
                             <strong>Prezzo: </strong>
                             <span>{{$instrument->price}} €</span>
+                        </div>
+                        <div class="mb-4">
+                            <strong>Codice Univoco: {{$instrument->code}}</strong>
                         </div>
                         <div class="mb-4">
                             <strong>Versione per mancini</strong>

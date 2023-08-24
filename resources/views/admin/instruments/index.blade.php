@@ -10,6 +10,11 @@
                     </div>
 
                     <div class="card-body">
+                        <div class="mb-4">
+                            <a href="{{route("instruments.create")}}">
+                                <button type="button" class="btn btn-success">Aggiungi Nuovi Strumenti</button>
+                            </a>
+                        </div>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -30,8 +35,21 @@
                                         <td>{{$instrument->price}} €</td>
                                         <td>
                                             <a href="{{route("instruments.show", $instrument->id)}}">
-                                                <button type="button" class="btn btn-primary">Visualizza</button>
+                                                <button type="button" class="btn btn-info">Visualizza</button>
                                             </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{route("instruments.edit", $instrument->id)}}">
+                                                <button type="button" class="btn btn-warning">Modifica</button>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <form action="{{route("instruments.destroy", $instrument->id)}}" method="POST">
+                                                @csrf
+                                                @method("DELETE")
+                                                
+                                                <button type="button" class="btn btn-danger">Elimina</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
