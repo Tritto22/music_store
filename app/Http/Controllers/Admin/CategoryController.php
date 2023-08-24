@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
     //validazione dati
     protected $validationRule = [
-        'name' => 'required|string|max:100'
+        'name' => 'required|string|max:100|unique:categories,name,{$category->id}'
     ];
 
     /**
@@ -45,24 +45,14 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //validazione dei dati
-        $request->validate($this->validationRule);
+        $request->validate(["name" => "required|string|max:100|unique:categories,name"]);
 
         //aggiunta nuova categoria da submit
         $data = $request->all();
 
         $newCategory = new Category();
         $newCategory->name = $data["name"];
-
-        //generazione slug
-        $slug = Str::of($newCategory->name)->slug("-");
-        $count = 1;
-        // prendi il primo post il cui slug è uguale a $slug
-        // se c'è genera un nuovo slug aggiungendo -$count
-        while (Category::where("slug", $slug)->first()) {
-            $slug = Str::of($newCategory->name)->slug("-") . "-{$count}";
-            $count++;
-        }
-        $newCategory->slug = $slug;
+        $newCategory->slug = Str::of($newCategory->name)->slug("-");
 
         $newCategory->save();
 
@@ -102,34 +92,20 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         //validazione dei dati
-        $request->validate($this->validationRule);
+        $request->validate([
+            "name" => "required|string|max:100|unique:categories,name,{$category->id}"
+        ]);
 
         // aggiorno la categoria
         $data = $request->all();
 
-        // se cambia il nome aggiorno lo slug
-        if ($category->name != $data['name']) {
-            $category->name = $data["name"];
-
-            $slug = Str::of($category->name)->slug("-");
-
-            // se lo slug generato è diverso dallo slug attualmente salvato nel db
-            if ($slug != $category->slug) {
-                $count = 1;
-
-                while (Category::where("slug", $slug)->first()) {
-                    $slug = Str::of($category->name)->slug("-") . "-{$count}";
-                    $count++;
-                }
-                $category->slug = $slug;
-            }
-        }
+        $category->name = $data["name"];
+        $category->slug = Str::of($category->name)->slug("-");
 
         $category->save();
 
         //redirect alla categoria modificato
         return redirect()->route("categories.show", $category->id);
-
     }
 
     /**
@@ -143,6 +119,5 @@ class CategoryController extends Controller
         $category->delete();
 
         return redirect()->route("categories.index");
-
     }
 }

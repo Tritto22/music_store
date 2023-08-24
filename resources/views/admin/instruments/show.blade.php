@@ -41,6 +41,18 @@
                                 <span class="badge badge-warning">In arrivo</span>
                             @endif
                         </div>
+                        <div class="mb-4">
+                            <div class="mb-4">
+                                <a href="{{route("instruments.edit", $instrument->id)}}">
+                                <button type="button" class="btn btn-warning">Modifica</button>
+                            </a>
+                            </div>
+                            <form action="{{route("instruments.destroy", $instrument->id)}}" method="POST">
+                                @csrf
+                                @method("DELETE")
+                                <button type="submit" class="btn btn-danger">Elimina</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -7,20 +7,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Instrument;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class InstrumentController extends Controller
 {
     //validazione dati
     protected $validationRule = [
-        'name' => 'required|string|max:100',
-        'code' => 'required|string|max:30',
+        "name" => "required|string|max:100",
         // ****REGEX**** /^\d{1,6} accetta numeri da uno a 6 cifre
         // (\,\d{1,2})?$/ parentesi opzionale / separatore virgola / accetta da 1 a 2 numeri dopo il separatore / $ fine espressione  
-        'price' => 'numeric|regex:/^\d{1,6}(\.\d{1,2})?$/',
-        'left_handed_version' => 'sometimes|accepted',
-        'available' => 'sometimes|accepted',
-        'category_id' => 'nullable|exists:categories,id'
+        "price" => "numeric|regex:/^\d{1,6}(\.\d{1,2})?$/",
+        "left_handed_version" => "sometimes|accepted",
+        "available" => "sometimes|accepted",
+        "category_id" => "nullable|exists:categories,id"
     ];
 
     /**
@@ -44,7 +42,7 @@ class InstrumentController extends Controller
     {
         $categories = Category::all();
 
-        return view("admin.instruments.create", compact('categories'));
+        return view("admin.instruments.create", compact("categories"));
     }
 
     /**
@@ -58,7 +56,7 @@ class InstrumentController extends Controller
         //validazione dei dati
         $request->validate($this->validationRule);
         $request->validate([
-            'code' => 'unique:instruments,code'
+            "code" => "required|string|max:30|unique:instruments,code"
         ]);
 
         //aggiunta nuovo strumento da submit
@@ -125,11 +123,9 @@ class InstrumentController extends Controller
     {
         //validazione dei dati
         $request->validate($this->validationRule);
-        // esclude se stesso da unique
         $request->validate([
-            Rule::unique('instruments')->ignore($instrument->id)
-        ]);
-        
+            "code" => "required|string|max:30|unique:instruments,code,{$instrument->id}"
+        ]);        
 
         // aggiorno lo strumento
         $data = $request->all();
