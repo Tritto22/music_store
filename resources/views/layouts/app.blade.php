@@ -37,7 +37,10 @@
                             <a class="nav-link" href="{{ route('home') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('instruments.index') }}">Instruments</a>
+                            <a class="nav-link" href="{{ route('instruments.index') }}">Strumenti</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('categories.index') }}">Categorie</a>
                         </li>
                     </ul>
 

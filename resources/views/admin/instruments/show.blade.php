@@ -10,6 +10,11 @@
                     </div>
 
                     <div class="card-body">
+                        @if ($instrument->category)
+                            <div class="mb-3">
+                                <h4>Categoria: <span class="p-2 bg-dark text-white rounded-pill">{{$instrument->category->name}}</span></h4>
+                            </div>
+                        @endif
                         <p class="mb-4">
                             {{$instrument->description}}
                         </p>

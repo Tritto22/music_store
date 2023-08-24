@@ -42,6 +42,18 @@
                                     <div class="alert alert-danger">{{$message}}</div>
                                 @enderror
                             </div>
+                            <div class="form-group">
+                                <label for="category">Categoria</label>
+                                <select class="custom-select @error('category_id') is-invalid @enderror" name="category_id" id="category">
+                                    <option value="">Seleziona una categoria</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{$category->id}}" {{old("category_id", $instrument->category_id) == $category->id ? "selected" : ""}}>{{$category->name}}</option>
+                                    @endforeach
+                                </select>
+                                @error('category_id')
+                                    <div class="alert alert-danger">{{$message}}</div>
+                                @enderror
+                            </div>
                             <div class="form-group form-check">
                                 <input type="checkbox" class="form-check-input @error('left_handed_version') is-invalid @enderror" id="left_handed_version" name="left_handed_version" {{old('left_handed_version', $instrument->left_handed_version) ? 'checked' : ''}}>
                                 <label class="form-check-label" for="left_handed_version">E' presente la versione per mancini</label>

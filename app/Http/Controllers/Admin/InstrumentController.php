@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Instrument;
@@ -18,7 +19,8 @@ class InstrumentController extends Controller
         // (\,\d{1,2})?$/ parentesi opzionale / separatore virgola / accetta da 1 a 2 numeri dopo il separatore / $ fine espressione  
         'price' => 'numeric|regex:/^\d{1,6}(\.\d{1,2})?$/',
         'left_handed_version' => 'sometimes|accepted',
-        'available' => 'sometimes|accepted'
+        'available' => 'sometimes|accepted',
+        'category_id' => 'nullable|exists:categories,id'
     ];
 
     /**
@@ -40,7 +42,9 @@ class InstrumentController extends Controller
      */
     public function create()
     {
-        return view("admin.instruments.create");
+        $categories = Category::all();
+
+        return view("admin.instruments.create", compact('categories'));
     }
 
     /**
@@ -78,12 +82,12 @@ class InstrumentController extends Controller
         $newInstrument->price = $data["price"];
         $newInstrument->left_handed_version = isset($data["left_handed_version"]);
         $newInstrument->available = isset($data["available"]);
+        $newInstrument->category_id = $data["category_id"];
 
         $newInstrument->save();
 
         //redirect allo strumento appena aggiunto
         return redirect()->route("instruments.show", $newInstrument->id);
-
     }
 
     /**
@@ -105,7 +109,9 @@ class InstrumentController extends Controller
      */
     public function edit(Instrument $instrument)
     {
-        return view('admin.instruments.edit', compact("instrument"));
+        $categories = Category::all();
+
+        return view('admin.instruments.edit', compact("instrument", "categories"));
     }
 
     /**
@@ -128,7 +134,7 @@ class InstrumentController extends Controller
         // aggiorno lo strumento
         $data = $request->all();
 
-        // se cambia il titolo aggiorno lo slug
+        // se cambia il nome aggiorno lo slug
         if ($instrument->name != $data['name']) {
             $instrument->name = $data["name"];
 
@@ -154,6 +160,7 @@ class InstrumentController extends Controller
         $instrument->price = $data["price"];
         $instrument->left_handed_version = isset($data["left_handed_version"]);
         $instrument->available = isset($data["available"]);
+        $instrument->category_id = $data["category_id"];
 
         $instrument->save();
 
