@@ -10,7 +10,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="{{route("instruments.store")}}" method="POST">
+                        <form action="{{route("instruments.store")}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="name">Nome</label>
@@ -66,8 +66,51 @@
                                     <div class="alert alert-danger">{{$message}}</div>
                                 @enderror
                             </div>
+                            <div class="custom-file mb-3">
+                                <img id="uploadPreview" width="100" class="mt-5" src="https://via.placeholder.com/300x200">
+                                <input type="file" class="custom-file-input" id="image" name="image" onchange="PreviewImage();">
+                                <label class="custom-file-label" for="image">Aggiungi immagine</label>
+
+                                {{-- script per il funzionamento dell'input dell'immagine con bootstrap --}}
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        // Aggiungi un event listener per il campo di input del file
+                                        const fileInput = document.getElementById('image');
+                                        const fileLabel = fileInput.nextElementSibling;
+
+                                        fileInput.addEventListener('change', function() {
+                                            // Aggiorna il testo della label con il nome del file selezionato
+                                            const fileName = this.files[0].name;
+                                            fileLabel.innerText = fileName;
+                                        });
+                                    });
+                                </script>
+
+                                {{-- script per la preview dell'immagine caricata, richiama la funzione con onchange di input--}}
+                                <script type="text/javascript">
+
+                                    function PreviewImage() {
+                                        var oFReader = new FileReader();
+                                        oFReader.readAsDataURL(document.getElementById("image").files[0]);
+
+                                        oFReader.onload = function (oFREvent) {
+                                            document.getElementById("uploadPreview").src = oFREvent.target.result;
+                                        };
+                                    };
+                                </script>
+
+                                @error('image')
+                                    <div class="alert alert-danger">{{$message}}</div>
+                                @enderror
+                            </div>
                             <button type="submit" class="btn btn-primary">Aggiungi</button>
                         </form>
+                        
+                        <div class="mt-4">
+                            <a href="{{url()->previous()}}">
+                                <button type="button" class="btn btn-primary">Torna alla pagina precedente</button>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Instrument;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class InstrumentController extends Controller
 {
@@ -18,7 +19,8 @@ class InstrumentController extends Controller
         "price" => "numeric|regex:/^\d{1,6}(\.\d{1,2})?$/",
         "left_handed_version" => "sometimes|accepted",
         "available" => "sometimes|accepted",
-        "category_id" => "nullable|exists:categories,id"
+        "category_id" => "nullable|exists:categories,id",
+        "image" => "nullable|image|mimes:jpeg,bmp,png|max:2048"
     ];
 
     /**
@@ -81,6 +83,12 @@ class InstrumentController extends Controller
         $newInstrument->left_handed_version = isset($data["left_handed_version"]);
         $newInstrument->available = isset($data["available"]);
         $newInstrument->category_id = $data["category_id"];
+
+        // salvo l'immagine se è presente
+        if (isset($data['image'])) {
+            $path_image = Storage::put("uploads", $data["image"]);
+            $newInstrument->image = $path_image;
+        }
 
         $newInstrument->save();
 
@@ -158,6 +166,14 @@ class InstrumentController extends Controller
         $instrument->available = isset($data["available"]);
         $instrument->category_id = $data["category_id"];
 
+        if (isset($data['image'])) {
+            // cancello l'immagine
+            Storage::delete($instrument->image);
+            // salvo la nuova immagine
+            $path_image = Storage::put("uploads", $data["image"]);
+            $instrument->image = $path_image;
+        }
+
         $instrument->save();
 
         //redirect allo strumento modificato
@@ -172,6 +188,11 @@ class InstrumentController extends Controller
      */
     public function destroy(Instrument $instrument)
     {
+        if ($instrument->image) {
+            // cancello prima l'immagine
+            Storage::delete($instrument->image);
+        }
+
         $instrument->delete();
 
         return redirect()->route("instruments.index");

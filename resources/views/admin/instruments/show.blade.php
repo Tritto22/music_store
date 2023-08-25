@@ -10,6 +10,11 @@
                     </div>
 
                     <div class="card-body">
+                        <div class="mb-5 d-flex justify-content-center">
+                            @if ($instrument->image)
+                                <img class="w-100" src="{{asset("storage/{$instrument->image}")}}" alt="{{$instrument->title}}">
+                            @endif
+                        </div>
                         @if ($instrument->category)
                             <div class="mb-3">
                                 <h4>Categoria: <span class="p-2 bg-dark text-white rounded-pill">{{$instrument->category->name}}</span></h4>
@@ -53,6 +58,10 @@
                                 <button type="submit" class="btn btn-danger">Elimina</button>
                             </form>
                         </div>
+
+                        <a href="{{url()->previous()}}">
+                            <button type="button" class="btn btn-primary">Torna alla pagina precedente</button>
+                        </a>
                     </div>
                 </div>
             </div>

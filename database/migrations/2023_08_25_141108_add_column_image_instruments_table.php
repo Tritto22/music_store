@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCategoryIdToInstrumentsTable extends Migration
+class AddColumnImageInstrumentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddCategoryIdToInstrumentsTable extends Migration
     public function up()
     {
         Schema::table("instruments", function (Blueprint $table) {
-            $table->foreignId("category_id")->nullable()->constrained()->onDelete("set null");
+            $table->string("image")->nullable();
         });
     }
 
@@ -26,8 +26,7 @@ class AddCategoryIdToInstrumentsTable extends Migration
     public function down()
     {
         Schema::table("instruments", function (Blueprint $table) {
-            $table->dropForeign(["category_id"]);
-            $table->dropColumn("category_id");
+            $table->dropColumn("image");
         });
     }
 }
