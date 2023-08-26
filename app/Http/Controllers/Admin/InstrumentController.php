@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Instrument;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Tag;
 
 class InstrumentController extends Controller
 {
@@ -20,7 +21,8 @@ class InstrumentController extends Controller
         "left_handed_version" => "sometimes|accepted",
         "available" => "sometimes|accepted",
         "category_id" => "nullable|exists:categories,id",
-        "image" => "nullable|image|mimes:jpeg,bmp,png|max:2048"
+        "image" => "nullable|image|mimes:jpeg,bmp,png|max:2048",
+        "tags" => "nullable|exists:tags,id"
     ];
 
     /**
@@ -43,8 +45,9 @@ class InstrumentController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view("admin.instruments.create", compact("categories"));
+        return view("admin.instruments.create", compact("categories", "tags"));
     }
 
     /**
