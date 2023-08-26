@@ -95,6 +95,11 @@ class InstrumentController extends Controller
 
         $newInstrument->save();
 
+        // aggiungo i tag
+        if (isset($data["tags"])) {
+            $newInstrument->tags()->sync($data["tags"]); //tags() metodo Model
+        }
+
         //redirect allo strumento appena aggiunto
         return redirect()->route("instruments.show", $newInstrument->id);
     }

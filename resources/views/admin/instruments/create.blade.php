@@ -103,6 +103,18 @@
                                     <div class="alert alert-danger">{{$message}}</div>
                                 @enderror
                             </div>
+                            <div class="form-group">
+                                <p>Tags</p>
+                                @foreach ($tags as $tag)
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" class="form-check-input @error('tags') is-invalid @enderror" id="{{$tag->slug}}" name="tags[]" value="{{$tag->id}}" {{in_array($tag->id, old("tags", [])) ? 'checked' : ''}}>
+                                        <label class="form-check-label" for="{{$tag->slug}}">{{$tag->name}}</label>
+                                    </div>
+                                @endforeach
+                                @error('tags')
+                                    <div class="alert alert-danger">{{$message}}</div>
+                                @enderror
+                            </div>
                             <button type="submit" class="btn btn-primary">Aggiungi</button>
                         </form>
                         
