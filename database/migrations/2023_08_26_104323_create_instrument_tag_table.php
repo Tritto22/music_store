@@ -15,6 +15,8 @@ class CreateInstrumentTagTable extends Migration
     {
         Schema::create('instrument_tag', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('instrument_id')->constrained()->onDelete("cascade"); //cascade rimuove il record e svuota la tabella in caso di relazioni
+            $table->foreignId('tag_id')->constrained()->onDelete("cascade");
             $table->timestamps();
         });
     }
