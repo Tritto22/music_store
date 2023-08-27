@@ -124,8 +124,9 @@ class InstrumentController extends Controller
     public function edit(Instrument $instrument)
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view('admin.instruments.edit', compact("instrument", "categories"));
+        return view('admin.instruments.edit', compact("instrument", "categories", "tags"));
     }
 
     /**
@@ -174,7 +175,7 @@ class InstrumentController extends Controller
         $instrument->available = isset($data["available"]);
         $instrument->category_id = $data["category_id"];
 
-        if (isset($data['image'])) {
+        if (isset($data["image"])) {
             // cancello l'immagine
             Storage::delete($instrument->image);
             // salvo la nuova immagine
@@ -183,6 +184,11 @@ class InstrumentController extends Controller
         }
 
         $instrument->save();
+
+        // aggiungo i tag
+        if (isset($data["tags"])) {
+            $instrument->tags()->sync($data["tags"]); //tags() metodo Model
+        }
 
         //redirect allo strumento modificato
         return redirect()->route("instruments.show", $instrument->id);

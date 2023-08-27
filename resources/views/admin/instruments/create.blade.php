@@ -119,7 +119,7 @@
                         </form>
                         
                         <div class="mt-4">
-                            <a href="{{url()->previous()}}">
+                            <a href="{{route("instruments.index")}}">
                                 <button type="button" class="btn btn-primary">Torna alla pagina precedente</button>
                             </a>
                         </div>
