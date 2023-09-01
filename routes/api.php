@@ -18,4 +18,4 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get("/intruments", "Api\IntrumentController@index");
+Route::get("/instruments", "Api\InstrumentController@index");
