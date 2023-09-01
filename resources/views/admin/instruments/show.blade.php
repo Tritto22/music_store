@@ -20,6 +20,16 @@
                                 <h4>Categoria: <span class="p-2 bg-dark text-white rounded-pill">{{$instrument->category->name}}</span></h4>
                             </div>
                         @endif
+
+                        @if (count($instrument->tags) > 0)
+                            <div class="mb-3">
+                                <strong>Tags:</strong>
+                                @foreach ($instrument->tags as $tag)
+                                    <span class="badge badge-primary">{{$tag->name}}</span>
+                                @endforeach
+                            </div>
+                        @endif
+
                         <p class="mb-4">
                             {{$instrument->description}}
                         </p>
