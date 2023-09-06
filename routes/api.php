@@ -19,3 +19,4 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get("/instruments", "Api\InstrumentController@index");
+Route::get("/instruments/{slug}", "Api\InstrumentController@show");

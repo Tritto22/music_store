@@ -9,8 +9,15 @@ use Illuminate\Http\Request;
 class InstrumentController extends Controller
 {
     public function index() {
-        $instruments = Instrument::all();
+        $instruments = Instrument::with(["category", "tags"])->get();
 
         return response()->json($instruments);
+    }
+
+    public function show($slug)
+    {
+        $instrument = Instrument::where("slug", $slug)->with(["category", "tags"])->first();
+
+        return response()->json($instrument);
     }
 }
