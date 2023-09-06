@@ -17,6 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Authentication
 Auth::routes();
 
 // Backoffice
@@ -27,4 +28,7 @@ Route::prefix("admin")->namespace("Admin")->middleware("auth")->group(function (
     Route::resource("tags", "TagController");
 });
 
-
+// Frontoffice
+Route::get("{any?}", function(){
+    return redirect('http://localhost:8080');
+})->where("any", ".*");
